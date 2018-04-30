@@ -155,7 +155,9 @@ transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
 ])
-data_dir = 'data/resized_celebA'          # this path depends on your computer
+#data_dir = 'data/resized_celebA'          # this path depends on your computer
+data_dir = 'data/charset_v1'          # this path depends on your computer
+
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
 temp = plt.imread(train_loader.dataset.imgs[0][0])
