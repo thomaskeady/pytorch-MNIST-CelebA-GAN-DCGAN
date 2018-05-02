@@ -11,4 +11,8 @@ do
 
 done
 
+echo Attempting push
+
+git push
+
 echo Done!

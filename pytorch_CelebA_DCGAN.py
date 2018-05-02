@@ -97,8 +97,6 @@ def show_result(num_epoch, show = False, save = False, path = 'result.png', isFi
         i = k // 5
         j = k % 5
         ax[i, j].cla()
-        #print(((test_images[k].cpu().data.numpy().transpose(1, 2, 0) + 1) / 2).shape)
-        #ax[i, j].imshow((test_images[k].cpu().data.numpy().transpose(1, 2, 0) + 1) / 2)
         ax[i, j].imshow((test_images[k].cpu().data.numpy().transpose(1, 2, 0) + 1).squeeze() / 2)
 
     label = 'Epoch {0}'.format(num_epoch)
@@ -137,7 +135,7 @@ def show_train_hist(hist, show = False, save = False, path = 'Train_hist.png'):
 # training parameters
 batch_size = 128
 lr = 0.0002
-train_epoch = 2
+train_epoch = 75
 
 # data_loader
 img_size = 64
@@ -152,15 +150,11 @@ else:
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-        #transforms.Normalize(mean=(0.5), std=(0.5))
     ])
 transform = transforms.Compose([
         transforms.Grayscale(), # Default output channels is 1
         transforms.ToTensor(),
-        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
-        #transforms.Normalize(mean=(0.5), std=(0.5))
-        # New transform using https://pytorch.org/docs/master/torchvision/transforms.html#torchvision.transforms.Grayscale
-        
+        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))       
 ])
 
 
@@ -171,9 +165,7 @@ data_dir = 'data/charset_v1'          # this path depends on your computer
 
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
-#train_loader = torch.utils.data.ImageLoader(dset, batch_size=128, shuffle=True)
 temp = plt.imread(train_loader.dataset.imgs[0][0])
-#print(train_loader.dataset.imgs)
 print(temp.shape)
 if (temp.shape[0] != img_size) or (temp.shape[0] != img_size):
     sys.stderr.write('Error! image size is not 64 x 64! run \"celebA_data_preprocess.py\" !!!')
@@ -241,7 +233,6 @@ for epoch in range(train_epoch):
         y_fake_ = torch.zeros(mini_batch)
 
         x_, y_real_, y_fake_ = Variable(x_.cuda()), Variable(y_real_.cuda()), Variable(y_fake_.cuda())
-        #print(x_.shape)
         D_result = D(x_).squeeze()
         D_real_loss = BCE_loss(D_result, y_real_)
 
