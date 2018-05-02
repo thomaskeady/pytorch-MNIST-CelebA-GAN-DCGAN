@@ -23,7 +23,7 @@ class generator(nn.Module):
         self.deconv3_bn = nn.BatchNorm2d(d*2)
         self.deconv4 = nn.ConvTranspose2d(d*2, d, 4, 2, 1)
         self.deconv4_bn = nn.BatchNorm2d(d)
-        self.deconv5 = nn.ConvTranspose2d(d, 3, 4, 2, 1)
+        self.deconv5 = nn.ConvTranspose2d(d, 1, 4, 2, 1)
 
     # weight_init
     def weight_init(self, mean, std):
@@ -45,7 +45,7 @@ class discriminator(nn.Module):
     # initializers
     def __init__(self, d=128):
         super(discriminator, self).__init__()
-        self.conv1 = nn.Conv2d(3, d, 4, 2, 1)
+        self.conv1 = nn.Conv2d(1, d, 4, 2, 1)
         self.conv2 = nn.Conv2d(d, d*2, 4, 2, 1)
         self.conv2_bn = nn.BatchNorm2d(d*2)
         self.conv3 = nn.Conv2d(d*2, d*4, 4, 2, 1)
