@@ -148,6 +148,7 @@ train_loader = torch.utils.data.DataLoader(
     datasets.MNIST('data', train=True, download=True, transform=transform),
     batch_size=batch_size, shuffle=True)
 
+#print(train_loader.dataset.imgs[0][0].shape) # Doesnt work
 # network
 G = generator(128)
 D = discriminator(128)
@@ -194,6 +195,7 @@ for epoch in range(train_epoch):
         y_fake_ = torch.zeros(mini_batch)
 
         x_, y_real_, y_fake_ = Variable(x_.cuda()), Variable(y_real_.cuda()), Variable(y_fake_.cuda())
+        print(x_.shape)
         D_result = D(x_).squeeze()
         D_real_loss = BCE_loss(D_result, y_real_)
 
