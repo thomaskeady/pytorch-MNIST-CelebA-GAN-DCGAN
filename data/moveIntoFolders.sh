@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd charset_v1
+cd charset_v1_inverted
 
 for filename in *.png; 
 do
