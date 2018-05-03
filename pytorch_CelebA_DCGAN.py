@@ -23,7 +23,7 @@ class generator(nn.Module):
         self.deconv3_bn = nn.BatchNorm2d(d*2)
         self.deconv4 = nn.ConvTranspose2d(d*2, d, 4, 2, 1)
         self.deconv4_bn = nn.BatchNorm2d(d)
-        self.deconv5 = nn.ConvTranspose2d(d, 3, 4, 2, 1)
+        self.deconv5 = nn.ConvTranspose2d(d, 1, 4, 2, 1)
 
     # weight_init
     def weight_init(self, mean, std):
@@ -45,7 +45,7 @@ class discriminator(nn.Module):
     # initializers
     def __init__(self, d=128):
         super(discriminator, self).__init__()
-        self.conv1 = nn.Conv2d(3, d, 4, 2, 1)
+        self.conv1 = nn.Conv2d(1, d, 4, 2, 1)
         self.conv2 = nn.Conv2d(d, d*2, 4, 2, 1)
         self.conv2_bn = nn.BatchNorm2d(d*2)
         self.conv3 = nn.Conv2d(d*2, d*4, 4, 2, 1)
@@ -97,7 +97,7 @@ def show_result(num_epoch, show = False, save = False, path = 'result.png', isFi
         i = k // 5
         j = k % 5
         ax[i, j].cla()
-        ax[i, j].imshow((test_images[k].cpu().data.numpy().transpose(1, 2, 0) + 1) / 2)
+        ax[i, j].imshow((test_images[k].cpu().data.numpy().transpose(1, 2, 0) + 1).squeeze() / 2)
 
     label = 'Epoch {0}'.format(num_epoch)
     fig.text(0.5, 0.04, label, ha='center')
@@ -135,7 +135,7 @@ def show_train_hist(hist, show = False, save = False, path = 'Train_hist.png'):
 # training parameters
 batch_size = 128
 lr = 0.0002
-train_epoch = 100
+train_epoch = 75
 
 # data_loader
 img_size = 64
@@ -152,15 +152,21 @@ else:
         transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
     ])
 transform = transforms.Compose([
+        transforms.Grayscale(), # Default output channels is 1
         transforms.ToTensor(),
-        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))
+        transforms.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5))       
 ])
+
+
+
+
 #data_dir = 'data/resized_celebA'          # this path depends on your computer
 data_dir = 'data/charset_v1'          # this path depends on your computer
 
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
 temp = plt.imread(train_loader.dataset.imgs[0][0])
+print(temp.shape)
 if (temp.shape[0] != img_size) or (temp.shape[0] != img_size):
     sys.stderr.write('Error! image size is not 64 x 64! run \"celebA_data_preprocess.py\" !!!')
     sys.exit(1)

@@ -13,5 +13,6 @@ do
     mkdir ${NAME[0]}
     cp $filename ${NAME[0]}/$filename
     echo Did $filename
+    
 done
 
