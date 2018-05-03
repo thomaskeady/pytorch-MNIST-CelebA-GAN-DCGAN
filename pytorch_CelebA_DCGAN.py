@@ -258,7 +258,7 @@ for epoch in range(train_epoch):
         z_ = torch.randn((mini_batch, 50)).view(-1, 50, 1, 1)
         z_ = Variable(z_.cuda())
 
-        G_result = G(z_)HELLO RICHARD
+        G_result = G(z_)
         D_result = D(G_result).squeeze()
         G_train_loss = BCE_loss(D_result, y_real_)
         G_train_loss.backward()
