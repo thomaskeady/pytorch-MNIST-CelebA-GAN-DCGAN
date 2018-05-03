@@ -135,7 +135,7 @@ def show_train_hist(hist, show = False, save = False, path = 'Train_hist.png'):
 # training parameters
 batch_size = 128
 lr = 0.0002
-train_epoch = 75
+train_epoch = 25
 
 # data_loader
 img_size = 64
@@ -167,7 +167,6 @@ data_dir = 'data/charset_v1_inverted'          # this path depends on your compu
 dset = datasets.ImageFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
 temp = plt.imread(train_loader.dataset.imgs[0][0])
-print(temp.shape)
 if (temp.shape[0] != img_size) or (temp.shape[0] != img_size):
     sys.stderr.write('Error! image size is not 64 x 64! run \"celebA_data_preprocess.py\" !!!')
     sys.exit(1)
