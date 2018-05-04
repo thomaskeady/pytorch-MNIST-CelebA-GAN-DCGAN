@@ -15,7 +15,7 @@ class generator(nn.Module):
     # initializers
     def __init__(self, d=128):
         super(generator, self).__init__()
-        self.deconv1 = nn.ConvTranspose2d(3, d*8, 4, 1, 0)
+        self.deconv1 = nn.ConvTranspose2d(3, d*8, 4, 1, 0) #####
         self.deconv1_bn = nn.BatchNorm2d(d*8)
         self.deconv2 = nn.ConvTranspose2d(d*8, d*4, 4, 2, 1)
         self.deconv2_bn = nn.BatchNorm2d(d*4)
