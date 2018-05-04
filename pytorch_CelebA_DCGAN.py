@@ -15,7 +15,7 @@ class generator(nn.Module):
     # initializers
     def __init__(self, d=128):
         super(generator, self).__init__()
-        self.deconv1 = nn.ConvTranspose2d(10, d*8, 4, 1, 0)
+        self.deconv1 = nn.ConvTranspose2d(3, d*8, 4, 1, 0)
         self.deconv1_bn = nn.BatchNorm2d(d*8)
         self.deconv2 = nn.ConvTranspose2d(d*8, d*4, 4, 2, 1)
         self.deconv2_bn = nn.BatchNorm2d(d*4)
@@ -74,10 +74,10 @@ def normal_init(m, mean, std):
         m.weight.data.normal_(mean, std)
         m.bias.data.zero_()
 
-fixed_z_ = torch.randn((5 * 5, 10)).view(-1, 10, 1, 1)    # fixed noise
+fixed_z_ = torch.randn((5 * 5, 3)).view(-1, 3, 1, 1)    # fixed noise ########
 fixed_z_ = Variable(fixed_z_.cuda(), volatile=True)
 def show_result(num_epoch, show = False, save = False, path = 'result.png', isFix=False):
-    z_ = torch.randn((5*5, 10)).view(-1, 10, 1, 1)
+    z_ = torch.randn((5*5, 3)).view(-1, 3, 1, 1)
     z_ = Variable(z_.cuda(), volatile=True)
 
     G.eval()
@@ -236,7 +236,7 @@ for epoch in range(train_epoch):
         D_result = D(x_).squeeze()
         D_real_loss = BCE_loss(D_result, y_real_)
 
-        z_ = torch.randn((mini_batch, 10)).view(-1, 10, 1, 1)
+        z_ = torch.randn((mini_batch, 3)).view(-1, 3, 1, 1) #####
         z_ = Variable(z_.cuda())
         G_result = G(z_)
 
@@ -254,7 +254,7 @@ for epoch in range(train_epoch):
         # train generator G
         G.zero_grad()
 
-        z_ = torch.randn((mini_batch, 10)).view(-1, 10, 1, 1)
+        z_ = torch.randn((mini_batch, 3)).view(-1, 3, 1, 1)
         z_ = Variable(z_.cuda())
 
         G_result = G(z_)
