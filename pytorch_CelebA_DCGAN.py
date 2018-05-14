@@ -165,6 +165,7 @@ transform = transforms.Compose([
 data_dir = 'data/charset_v1_inverted'          # this path depends on your computer
 
 dset = datasets.ImageFolder(data_dir, transform)
+#dset = datasets.DatasetFolder(data_dir, transform)
 train_loader = torch.utils.data.DataLoader(dset, batch_size=128, shuffle=True)
 temp = plt.imread(train_loader.dataset.imgs[0][0])
 if (temp.shape[0] != img_size) or (temp.shape[0] != img_size):
