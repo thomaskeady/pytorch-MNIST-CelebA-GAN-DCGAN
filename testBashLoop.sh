@@ -1,0 +1,13 @@
+
+
+
+for i in {1..5}
+do
+	python pytorch_CelebA_DCGAN.py
+	#git add .
+	#git commit -m "RR _inverted _z200 $i"
+
+done
+
+
+echo Done!

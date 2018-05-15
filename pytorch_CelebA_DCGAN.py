@@ -135,7 +135,7 @@ def show_train_hist(hist, show = False, save = False, path = 'Train_hist.png'):
 # training parameters
 batch_size = 128
 lr = 0.0002
-train_epoch = 1
+train_epoch = 10
 
 # data_loader
 img_size = 64
@@ -162,7 +162,8 @@ transform = transforms.Compose([
 
 #data_dir = 'data/resized_celebA'          # this path depends on your computer
 #data_dir = 'data/charset_v1'          # this path depends on your computer
-data_dir = 'data/charset_v1_inverted'          # this path depends on your computer
+#data_dir = 'data/charset_v1_inverted'          # this path depends on your computer
+data_dir = 'data/handwritten_images'          # this path depends on your computer
 
 dset = datasets.ImageFolder(data_dir, transform)
 #dset = datasets.DatasetFolder(data_dir, transform)
@@ -188,12 +189,12 @@ G_optimizer = optim.Adam(G.parameters(), lr=lr, betas=(0.5, 0.999))
 D_optimizer = optim.Adam(D.parameters(), lr=lr, betas=(0.5, 0.999))
 
 # results save folder
-if not os.path.isdir('CelebA_DCGAN_results_inverted'):
-    os.mkdir('CelebA_DCGAN_results_inverted')
-if not os.path.isdir('CelebA_DCGAN_results_inverted/Random_results'):
-    os.mkdir('CelebA_DCGAN_results_inverted/Random_results')
-if not os.path.isdir('CelebA_DCGAN_results_inverted/Fixed_results'):
-    os.mkdir('CelebA_DCGAN_results_inverted/Fixed_results')
+if not os.path.isdir('CelebA_DCGAN_results_handwritten'):
+    os.mkdir('CelebA_DCGAN_results_handwritten')
+if not os.path.isdir('CelebA_DCGAN_results_handwritten/Random_results'):
+    os.mkdir('CelebA_DCGAN_results_handwritten/Random_results')
+if not os.path.isdir('CelebA_DCGAN_results_handwritten/Fixed_results'):
+    os.mkdir('CelebA_DCGAN_results_handwritten/Fixed_results')
 
 train_hist = {}
 train_hist['D_losses'] = []
@@ -274,8 +275,8 @@ for epoch in range(train_epoch):
 
     print('[%d/%d] - ptime: %.2f, loss_d: %.3f, loss_g: %.3f' % ((epoch + 1), train_epoch, per_epoch_ptime, torch.mean(torch.FloatTensor(D_losses)),
                                                               torch.mean(torch.FloatTensor(G_losses))))
-    p = 'CelebA_DCGAN_results_inverted/Random_results/CelebA_DCGAN_' + str(epoch + 1) + '.png'
-    fixed_p = 'CelebA_DCGAN_results_inverted/Fixed_results/CelebA_DCGAN_' + str(epoch + 1) + '.png'
+    p = 'CelebA_DCGAN_results_handwritten/Random_results/CelebA_DCGAN_' + str(epoch + 1) + '.png'
+    fixed_p = 'CelebA_DCGAN_results_handwritten/Fixed_results/CelebA_DCGAN_' + str(epoch + 1) + '.png'
     show_result((epoch+1), save=True, path=p, isFix=False)
     show_result((epoch+1), save=True, path=fixed_p, isFix=True)
     train_hist['D_losses'].append(torch.mean(torch.FloatTensor(D_losses)))
@@ -288,15 +289,15 @@ train_hist['total_ptime'].append(total_ptime)
 
 print("Avg per epoch ptime: %.2f, total %d epochs ptime: %.2f" % (torch.mean(torch.FloatTensor(train_hist['per_epoch_ptimes'])), train_epoch, total_ptime))
 print("Training finish!... save training results")
-torch.save(G.state_dict(), "CelebA_DCGAN_results_inverted/generator_param.pkl")
-torch.save(D.state_dict(), "CelebA_DCGAN_results_inverted/discriminator_param.pkl")
-with open('CelebA_DCGAN_results_inverted/train_hist.pkl', 'wb') as f:
+torch.save(G.state_dict(), "CelebA_DCGAN_results_handwritten/generator_param.pkl")
+torch.save(D.state_dict(), "CelebA_DCGAN_results_handwritten/discriminator_param.pkl")
+with open('CelebA_DCGAN_results_handwritten/train_hist.pkl', 'wb') as f:
     pickle.dump(train_hist, f)
 
-show_train_hist(train_hist, save=True, path='CelebA_DCGAN_results_inverted/CelebA_DCGAN_train_hist.png')
+show_train_hist(train_hist, save=True, path='CelebA_DCGAN_results_handwritten/CelebA_DCGAN_train_hist.png')
 
 images = []
 for e in range(train_epoch):
-    img_name = 'CelebA_DCGAN_results_inverted/Fixed_results/CelebA_DCGAN_' + str(e + 1) + '.png'
+    img_name = 'CelebA_DCGAN_results_handwritten/Fixed_results/CelebA_DCGAN_' + str(e + 1) + '.png'
     images.append(imageio.imread(img_name))
-imageio.mimsave('CelebA_DCGAN_results_inverted/generation_animation.gif', images, fps=5)
+imageio.mimsave('CelebA_DCGAN_results_handwritten/generation_animation.gif', images, fps=5)
